@@ -10,7 +10,7 @@ if (mb_strtolower($_SERVER['SERVER_NAME']) !== 'localhost') {
 }
 
 /* Require App Autoload */
-require_once ROOT . '/vendor/hodos/autoload.php';
+require_once ROOT . '/vendor/xhodos/framework/autoload.php';
 
 /* Require router error file */
-require_once ROOT . '/vendor/hodos/stack.php';
+require_once ROOT . '/vendor/xhodos/framework/stack.php';

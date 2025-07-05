@@ -3,10 +3,10 @@
 if (!defined('PROJECT_ROOT'))
 	define('PROJECT_ROOT', realpath(__DIR__));
 
-require_once PROJECT_ROOT . '/vendor/hodos/Helpers/app.php';
-// require_once PROJECT_ROOT . '/vendor/hodos/constants.php';
-require_once PROJECT_ROOT . '/vendor/hodos/Stack/Template/Engine.php';
-require_once PROJECT_ROOT . '/vendor/hodos/Stack/Template/Compiler.php';
+require_once PROJECT_ROOT . '/vendor/xhodos/framework/Helpers/app.php';
+// require_once PROJECT_ROOT . '/vendor/xhodos/framework/constants.php';
+require_once PROJECT_ROOT . '/vendor/xhodos/framework/Stack/Template/Engine.php';
+require_once PROJECT_ROOT . '/vendor/xhodos/framework/Stack/Template/Compiler.php';
 
 use Hodos\Stack\Template\Compiler;
 

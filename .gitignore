@@ -1,8 +1,6 @@
 .idea
 system/framework/cache
 system/framework/logs
-
-vendor/composer
-vendor/autoload.php
+vendor
 
 composer.lock

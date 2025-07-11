@@ -65,29 +65,40 @@ project-root/
 
 ###### Run Dev Server
 
-`php stack serve --host 127.0.0.1 --port 8000`
+```
+php stack serve --host 127.0.0.1 --port 8000
+```
 
 ###### Compile Views
 
-`php stack compile`
+```
+php stack compile
+```
 
 ###### Clear View Cache
 
-`php stack clear`
+```
+php stack clear
+```
 
 ###### 🖌️ Writing Views
+
+###### # index.xs.php
 ```
-{{-- index.xs.php --}}
 @extends("layouts.master")
 
+@section('title') Hello World @endsection
 @section("content")
     <h1>Welcome, {{ $user->name }}</h1>
     @if($user->isAdmin())
         <p>You have admin access</p>
     @endif
 @endsection
+```
+<br>
 
-{{-- Layout.xs.php --}}
+###### # layout.xs.php
+```
 <!DOCTYPE html>
 <html>
 <head><title>@yield("title")</title></head>
@@ -101,7 +112,7 @@ project-root/
 
 ### 🛡️ CSRF Protection
 
-The `@csrf` directive genrates `<input type="hidden" name="_token" value="<?= csrf_token() ?>">` for CSRF-Token generation
+The ```@csrf``` directive genrates `<input type="hidden" name="_token" value="<?= csrf_token() ?>">` for CSRF-Token generation
 <br>
 <br>
 

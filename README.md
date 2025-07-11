@@ -4,7 +4,7 @@ Xhodos is a lightweight and expressive PHP framework designed for simplicity, sp
 
 <br>
 
-## 🚀 Features
+### 🚀 Features
 
 🔧 Custom Templating Engine (with @if, @foreach, @include, @extends, @section, @csrf); featuring adding custom directives.
 
@@ -20,7 +20,7 @@ Xhodos is a lightweight and expressive PHP framework designed for simplicity, sp
 <br>
 <br>
 
-## 📁 Project Structure
+### 📁 Project Structure
 
 ```
 project-root/
@@ -46,7 +46,7 @@ project-root/
 <br>
 <br>
 
-## ⚙️ Installation
+### ⚙️ Installation
 
 ###### # Clone the repo
 `$ git clone https://github.com/xhodos/xhodos.git`
@@ -61,7 +61,7 @@ project-root/
 
 ⚠️ Note: The CLI tool requires a working installation of PHP (v8.0 or higher). Use `php stack` to run commands.
 
-### 📦 Usage
+#### 📦 Usage
 
 ###### Run Dev Server
 
@@ -99,7 +99,7 @@ project-root/
 <br>
 <br>
 
-🛡️ CSRF Protection
+### 🛡️ CSRF Protection
 
 The `@csrf` directive genrates `<input type="hidden" name="_token" value="<?= csrf_token() ?>">` for CSRF-Token generation
 <br>

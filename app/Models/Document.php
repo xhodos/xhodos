@@ -2,12 +2,9 @@
 
 namespace App\Models;
 
-use Hodos\Base\Model;
 use Hodos\Stack\SoftDeletable;
 
-class User extends Model
+class Document extends Model
 {
 	use SoftDeletable;
-	
-	protected $hidden = [];
 }

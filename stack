@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 if (!defined('PROJECT_ROOT'))
-	define('PROJECT_ROOT', realpath(__DIR__));
+	define('PROJECT_ROOT', str_replace('\\', '/', realpath(__DIR__)));
 
 require_once PROJECT_ROOT . '/vendor/xhodos/framework/Helpers/app.php';
 // require_once PROJECT_ROOT . '/vendor/xhodos/framework/constants.php';
@@ -35,6 +35,13 @@ function portIsInUse(string $host, int $port):bool
 	return false;
 }
 
+$getFileCreationPath = function (string $path) {
+	$path = str_replace('.php', '', correctDirPath($path));
+	$classname = array_reverse(explode('/', $path))[0];
+	$final_path = implode('/', array_slice(array_reverse(explode('/', $path)), 1));
+	return [$final_path, $classname];
+};
+
 function parseOptions(array $argv):array
 {
 	$options = [];
@@ -48,7 +55,8 @@ function parseOptions(array $argv):array
 			} else {
 				$options[$key] = true; // It's a flag (e.g., --verbose)
 			}
-		}
+		} else
+			$options['misc'][] = $argv[$i];
 	}
 	return $options;
 }
@@ -61,10 +69,8 @@ switch ($command) {
 		$host = $options['host'] ?? '127.0.0.1';
 		$port = $options['port'] ?? '8000';
 		
-		if (portIsInUse($host, $port)) {
-			echo "❌  Port $port on $host is already in use.\n";
-			exit(1); // Exit with failure
-		}
+		if (portIsInUse($host, $port))
+			die("❌  Port $port on $host is already in use.\n");
 		
 		echo "✅  Port $port on $host is available.\n";
 		echo "🚀 Starting server at http://$host:$port\n";
@@ -88,6 +94,113 @@ switch ($command) {
 		echo "🧼  Clearing view cache...\n";
 		Compiler::clearCache();
 		echo "✅  View cache cleared.\n";
+		break;
+	
+	case 'make:model':
+		if (!is_string($options['file']))
+			die("❌  Model not defined.\n");
+		
+		$use = '';
+		[$path, $controllerName] = $getFileCreationPath($options['file']);
+		$filename = correctDirPath(PROJECT_ROOT . "/app/Models/" . (!empty($path) ? "$path/" : NULL) . "$controllerName.php");
+		$namespace = "App\\Models" . ($path ? mb_convert_case("\\$path", MB_CASE_TITLE) : NULL);
+		
+		if (file_exists($filename))
+			die("Model $filename already exists.\n");
+		
+		if (!is_dir(correctDirPath(PROJECT_ROOT . "/app/Models/" . (!empty($path) ? "$path/" : NULL))))
+			mkdir(correctDirPath(PROJECT_ROOT . "/app/Models/" . (!empty($path) ? "$path/" : NULL)), 0777, true);
+		
+		if ($namespace !== "App\\Models")
+			$use = <<<USE
+
+			use App\\Models\\Model;
+			
+			USE;
+		
+		$modelContent = <<<MODEL
+		<?php
+		
+		namespace $namespace;
+		$use
+		class $controllerName extends Model {}
+		MODEL;
+		
+		file_put_contents($filename, $modelContent);
+		echo "✅  Model $controllerName created at " . rtrim(correctDirPath((PROJECT_ROOT . "/app/Models/" . (!empty($path) ? "$path" : NULL))), '/') . ".\n";
+		break;
+	
+	case 'make:component':
+		if (!is_string($options['file']))
+			die("❌  Component not defined.\n");
+		
+		$use = '';
+		[$path, $controllerName] = $getFileCreationPath($options['file']);
+		$filename = correctDirPath(PROJECT_ROOT . "/app/Components/Views/" . (!empty($path) ? "$path/" : NULL) . "$controllerName.php");
+		$namespace = "App\\Components\\Views" . ($path ? ("\\$path") : NULL);
+		
+		
+		if (file_exists($filename))
+			die("Component $filename already exists.\n");
+		
+		if (!is_dir(correctDirPath(PROJECT_ROOT . "/app/Components/Views/" . (!empty($path) ? "$path/" : NULL))))
+			mkdir(correctDirPath(PROJECT_ROOT . "/app/Components/Views/" . (!empty($path) ? "$path/" : NULL)), 0777, true);
+		
+		$modelContent = <<<COMPONENT
+		<?php
+		
+		namespace $namespace;
+		
+		use Hodos\Stack\Template\Component;
+		use Hodos\Stack\Template\View;
+		
+		class $controllerName extends Component {
+			public function __construct() {}
+
+			public function render():View
+			{
+				return view('');
+			}
+		}
+		COMPONENT;
+		
+		file_put_contents($filename, $modelContent);
+		echo "✅  Component $controllerName created at " . rtrim(correctDirPath((PROJECT_ROOT . "/app/Components/Views/" . (!empty($path) ? "$path" : NULL))), '/') . ".\n";
+		break;
+	
+	case 'make:controller':
+		if (!is_string($options['file']))
+			die("❌  Controller not defined.\n");
+		
+		$use = '';
+		[$path, $controllerName] = $getFileCreationPath($options['file']);
+		$filename = correctDirPath(PROJECT_ROOT . "/app/Controllers/" . (!empty($path) ? "$path/" : NULL) . "$controllerName.php");
+		$namespace = "App\\Controllers" . ($path ? mb_convert_case("\\$path", MB_CASE_TITLE) : NULL);
+		
+		
+		if (file_exists($filename))
+			die("Controller $filename already exists.\n");
+		
+		if (!is_dir(correctDirPath(PROJECT_ROOT . "/app/Controllers/" . (!empty($path) ? "$path/" : NULL))))
+			mkdir(correctDirPath(PROJECT_ROOT . "/app/Controllers/" . (!empty($path) ? "$path/" : NULL)), 0777, true);
+		
+		if ($namespace !== "App\\Controllers")
+			$use = <<<USE
+
+			use App\\Controllers\\Controller;
+			
+			USE;
+		
+		$modelContent = <<<CONTROLLER
+		<?php
+		
+		namespace $namespace;
+		$use
+		class $controllerName extends Controller {}
+		CONTROLLER;
+		
+		file_put_contents($filename, $modelContent);
+		echo "✅  Model $controllerName created at " . rtrim(correctDirPath((PROJECT_ROOT . "/app/Models/" . (!empty($path) ? "$path" : NULL))), '/') . ".\n";
 		break;
 	
 	default:

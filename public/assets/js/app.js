@@ -1,6 +1,4 @@
 (() => {
-	Fuxcel.path = 'http://localhost/messenger/assets/plugins/fuxcel';
-	
 	let documentHeight = window.innerHeight,
 		documentWidth = window.innerWidth,
 		
@@ -170,7 +168,11 @@
 	fx('form').off().upon('submit', function (e) {
 		e.preventDefault();
 		const form = fx(e.currentTarget);
-		console.log(fx('[contenteditable]', form).innerText);
+		
+		form.formValidator.handleFormSubmit().then(result => {
+			console.log(result);
+		}).catch(error => console.log(error));
+		// console.log(fx('[contenteditable]', form).innerText);
 	});
 	
 	fx(document).off('click').upon('click', function (e) {
@@ -187,11 +189,11 @@
 		menuToggleActions();
 	}
 	
-	const errorBag = JSON.parse(fx('#error-bag').dataAttrib('errors'));
+	/*const errorBag = JSON.parse(fx('#error-bag').dataAttrib('errors'));
 	
 	Object.keys(errorBag).forEach(key => {
 		fx(fx('.name')[0]).insertHTML(`<div>${errorBag[key]}</div>`, 'postfix');
-	});
+	});*/
 	dynamicChatBox();
 	menuToggleActions();
 })();

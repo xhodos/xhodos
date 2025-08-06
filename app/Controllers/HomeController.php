@@ -5,17 +5,20 @@ namespace App\Controllers;
 use DateTime;
 use Hodos\Base\Controller;
 use Hodos\Base\Request;
+use Hodos\Base\Validator;
+use Hodos\Base\ValidatorResponse;
+use Hodos\Stack\Template\View;
 
 class HomeController extends Controller
 {
-	public function show(Request $request)
+	public function show(Request $request):View|string
 	{
-		// global $errorKeys;
 		$request->add('errorKeys', []);
-		$validator = $request->validate([
+		$request->validate([
 			'id' => ['required', 'email', 'string', 'date:m-d-Y'],
 			'name_bass' => ['required', 'array'],
 		]);
+		new ValidatorResponse(new Validator())->stackErrors(['blue' => 'red']); // TODO: Clean function to stack Validator Errors
 		
 		$chat_messages = (object) [
 			[
@@ -128,6 +131,6 @@ class HomeController extends Controller
 				],
 			],
 		];
-		return view('index', ['error' => $validator, ...compact('chat_messages')]);
+		return view('index', [...compact('chat_messages')]);
 	}
 }

@@ -1,26 +1,17 @@
 @extends('components.layout')
+
 @section('body')
-	<div id="error-bag" data-errors='<?= json_encode($error) ?>'></div>
-	<nav class="space-items">
-		<div class="nav-links">
-			<a href="" class="left-menu-toggler active" data-id="#chat-contacts" title="Chats">
-				<span>Chats</span>
-				<span><i class="far fa-comments"></i></span>
-			</a>
-			<a href="" class="left-menu-toggler" data-id="#chat-requests" title="Chat Requests">
-				<span>Requests</span>
-				<span><i class="far fa-comment-dots"></i></span>
-			</a>
-			<a href="" class="left-menu-toggler" data-id="#chat-archives" title="Archived">
-				<span>Archived</span>
-				<span><i class="far fa-archive"></i></span>
-			</a>
-		</div>
-		<a href="" class="user-profile-toggler" title="Profile">
-			<!-- <img src="assets/img/user-default.png" class="profile-img rounded-circle" alt=""> -->
-			<i class="fad fa-3x fa-user-circle"></i>
-		</a>
-	</nav>
+	
+	<form method="post" action="{{ route('test-submit') }}" id="test-form">
+		@csrf
+		@method('put')
+		<input name="test_input" id="test_input">
+		<button type="submit" class="fx-btn fx-btn-primary">Test Submit</button>
+	</form>
+	
+	<hodos:nav/>
+	
+	<div id="error-bag" data-errors='<?= json_encode(errorBag()) ?>'></div>
 	
 	<div class="chat-wrapper">
 		<section id="chat-contacts" class="left-menu active">
@@ -31,11 +22,11 @@
 					<div class="chat-friend-info">
 						<span class="name" title="{{ $chat_message['name'] }}">{!! $chat_message['name'] !!}</span>
 						<div>
-						<span class="message" title="<?= end($chat_message['messages'][array_key_last($chat_message['messages'])])['message']; ?>">
-							<span class="date"><?= array_key_last($chat_message['messages']); ?></span>
-							&bull;
-							<?= end($chat_message['messages'][array_key_last($chat_message['messages'])])['message']; ?>
-						</span>
+							<span class="message" title="<?= end($chat_message['messages'][array_key_last($chat_message['messages'])])['message']; ?>">
+								<span class="date"><?= array_key_last($chat_message['messages']); ?></span>
+								&bull;
+								<?= end($chat_message['messages'][array_key_last($chat_message['messages'])])['message']; ?>
+							</span>
 						</div>
 					</div>
 				</a>
@@ -85,14 +76,14 @@
 					<div class="chat-init" style="margin: auto;">Click on a chat to start.</div>
 					<div class="chat-top">
 						<div class="bio">
-							<!-- <i class="fa fa-4x fa-user-circle"></i>
+							{{-- <i class="fa fa-4x fa-user-circle"></i>
 							<h4>John Doe</h4>
-	
+							
 							<span>You're friends</span>
 							<span>Lives in Abuja</span>
-							<span>Studied at UNKNWON</span> -->
+							<span>Studied at UNKNWON</span> --}}
 							
-							<!-- <p><a href="">View profile</a></p> -->
+							{{-- <p><a href="">View profile</a></p> --}}
 						</div>
 					</div>
 					<div class="chat-main">

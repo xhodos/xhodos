@@ -10,7 +10,7 @@
   "license": "MIT",
   "require-dev": {
     "php": "^8.4",
-    "xhodos/framework": "^1.0.0"
+    "xhodos/framework": "^v1.2.0.x-dev"
   },
   "autoload": {
     "psr-4": {
@@ -20,6 +20,7 @@
   },
   "require": {
     "ext-mbstring": "*",
-    "ext-mysqli": "*"
+    "ext-mysqli": "*",
+    "ext-http": "*"
   }
 }

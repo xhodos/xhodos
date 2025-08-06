@@ -18,7 +18,7 @@
 
 <body>
 	<main>
-		@yield("body")
+		@yield('body')
 	</main>
 </body>
 </html>

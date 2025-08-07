@@ -20,7 +20,6 @@
   },
   "require": {
     "ext-mbstring": "*",
-    "ext-mysqli": "*",
-    "ext-http": "*"
+    "ext-mysqli": "*"
   }
 }

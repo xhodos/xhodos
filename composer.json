@@ -10,7 +10,7 @@
   "license": "MIT",
   "require-dev": {
     "php": "^8.4",
-    "xhodos/framework": "^1.0.0"
+    "xhodos/framework": "1.0.0"
   },
   "autoload": {
     "psr-4": {

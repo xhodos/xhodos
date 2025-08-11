@@ -4,7 +4,6 @@ if (!defined('PROJECT_ROOT'))
 	define('PROJECT_ROOT', str_replace('\\', '/', realpath(__DIR__)));
 
 require_once PROJECT_ROOT . '/vendor/xhodos/framework/Helpers/app.php';
-// require_once PROJECT_ROOT . '/vendor/xhodos/framework/constants.php';
 require_once PROJECT_ROOT . '/vendor/xhodos/framework/Stack/Template/Engine.php';
 require_once PROJECT_ROOT . '/vendor/xhodos/framework/Stack/Template/Compiler.php';
 
@@ -101,8 +100,8 @@ switch ($command) {
 			die("❌  Model not defined.\n");
 		
 		$use = '';
-		[$path, $controllerName] = $getFileCreationPath($options['file']);
-		$filename = correctDirPath(PROJECT_ROOT . "/app/Models/" . (!empty($path) ? "$path/" : NULL) . "$controllerName.php");
+		[$path, $modelName] = $getFileCreationPath($options['file']);
+		$filename = correctDirPath(PROJECT_ROOT . "/app/Models/" . (!empty($path) ? "$path/" : NULL) . "$modelName.php");
 		$namespace = "App\\Models" . ($path ? mb_convert_case("\\$path", MB_CASE_TITLE) : NULL);
 		
 		if (file_exists($filename))
@@ -123,49 +122,74 @@ switch ($command) {
 		
 		namespace $namespace;
 		$use
-		class $controllerName extends Model {}
+		/**
+		* Create a new hodos model instance.
+		*/
+		class $modelName extends Model {}
 		MODEL;
 		
 		file_put_contents($filename, $modelContent);
-		echo "✅  Model $controllerName created at " . rtrim(correctDirPath((PROJECT_ROOT . "/app/Models/" . (!empty($path) ? "$path" : NULL))), '/') . ".\n";
+		echo "✅  Model $modelName created at " . rtrim(correctDirPath((PROJECT_ROOT . "/app/Models/" . (!empty($path) ? "$path" : NULL))), '/') . ".\n";
 		break;
 	
 	case 'make:component':
 		if (!is_string($options['file']))
 			die("❌  Component not defined.\n");
 		
-		$use = '';
-		[$path, $controllerName] = $getFileCreationPath($options['file']);
-		$filename = correctDirPath(PROJECT_ROOT . "/app/Components/Views/" . (!empty($path) ? "$path/" : NULL) . "$controllerName.php");
+		$message = '';
+		[$path, $componentName] = $getFileCreationPath($options['file']);
+		$filename = correctDirPath(PROJECT_ROOT . "/app/Components/Views/" . (!empty($path) ? "$path/" : NULL) . "$componentName.php");
+		
+		$viewComponent = NULL;
 		$namespace = "App\\Components\\Views" . ($path ? ("\\$path") : NULL);
+		$findFileByName = findFileRecursive(PROJECT_ROOT . '/views/components', "$componentName.xs.php");
 		
-		
-		if (file_exists($filename))
+		if (file_exists($filename) && $findFileByName)
 			die("Component $filename already exists.\n");
+		
+		if ($findFileByName)
+			$viewComponent = preg_replace("/^(.*?)\./", '', ltrim(str_replace(['.xs.php', '.php'], '', str_replace('/', '.', $findFileByName->relative)), "."));
+		else {
+			if (!is_dir(getRootPath() . "/" . env('APP_VIEWS_DIR', 'views') . '/components'))
+				mkdir(getRootPath() . "/" . env('APP_VIEWS_DIR', 'views') . '/components', 0777, true);
+			$viewComponentName = getRootPath() . "/" . env('APP_VIEWS_DIR', 'views') . '/components/' . toKebabCase($componentName) . ".xs.php";
+			$viewContent = <<<VIEW
+			<!-- Ho Christos monon estin, hē hodos, hē alētheia, kai hē zōē. -->
+			VIEW;
+			file_put_contents($viewComponentName, $viewContent);
+			$viewComponent = "components." . toKebabCase($componentName);
+			$message .= "✅  Component view $viewComponent.xs.php created at " . rtrim($viewComponentName, '/') . ".\n";
+		}
 		
 		if (!is_dir(correctDirPath(PROJECT_ROOT . "/app/Components/Views/" . (!empty($path) ? "$path/" : NULL))))
 			mkdir(correctDirPath(PROJECT_ROOT . "/app/Components/Views/" . (!empty($path) ? "$path/" : NULL)), 0777, true);
 		
-		$modelContent = <<<COMPONENT
-		<?php
-		
-		namespace $namespace;
-		
-		use Hodos\Stack\Template\Component;
-		use Hodos\Stack\Template\View;
-		
-		class $controllerName extends Component {
-			public function __construct() {}
+		if (!file_exists($filename)) {
+			$modelContent = <<<COMPONENT
+			<?php
+			
+			namespace $namespace;
+			
+			use Hodos\Stack\Template\Component;
+			use Hodos\Stack\Template\View;
+			
+			/**
+			* Create a new hodos component instance.
+			*/
+			class $componentName extends Component {
+				public function __construct() {}
 
-			public function render():View
-			{
-				return view('');
+				public function render():View
+				{
+					return view('$viewComponent');
+				}
 			}
+			COMPONENT;
+			
+			file_put_contents($filename, $modelContent);
+			$message .= "✅  Component $componentName created at " . rtrim(correctDirPath((PROJECT_ROOT . "/app/Components/Views/" . (!empty($path) ? "$path" : NULL))), '/') . ".\n";
 		}
-		COMPONENT;
-		
-		file_put_contents($filename, $modelContent);
-		echo "✅  Component $controllerName created at " . rtrim(correctDirPath((PROJECT_ROOT . "/app/Components/Views/" . (!empty($path) ? "$path" : NULL))), '/') . ".\n";
+		echo $message;
 		break;
 	
 	case 'make:controller':
@@ -196,6 +220,9 @@ switch ($command) {
 		
 		namespace $namespace;
 		$use
+		/**
+		* Create a new hodos controller instance.
+		*/
 		class $controllerName extends Controller {}
 		CONTROLLER;
 		

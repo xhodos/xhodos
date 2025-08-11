@@ -15,10 +15,14 @@
   "autoload": {
     "psr-4": {
       "App\\": "app/",
-      "Hodos\\": "vendor/xhodos/framework/"
+      "Hodos\\": "vendor/xhodos/framework/",
+      "setasign\\Fpdi\\": "vendor/setasign/fpdi/src/",
+      "setasign\\FpdiPdfParser\\PdfParser\\": "vendor/setasign/fpdi/src/PdfParser/"
     }
   },
   "require": {
+    "setasign/fpdi": "^2.6",
+    "setasign/fpdf": "^1.8",
     "ext-mbstring": "*",
     "ext-mysqli": "*"
   }

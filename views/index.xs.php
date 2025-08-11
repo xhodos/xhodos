@@ -1,15 +1,8 @@
 @extends('components.layout')
 
+<hodos:nav/>
+
 @section('body')
-	
-	<form method="post" action="{{ route('test-submit') }}" id="test-form">
-		@csrf
-		@method('put')
-		<input name="test_input" id="test_input">
-		<button type="submit" class="fx-btn fx-btn-primary">Test Submit</button>
-	</form>
-	
-	<hodos:nav/>
 	
 	<div id="error-bag" data-errors='<?= json_encode(errorBag()) ?>'></div>
 	

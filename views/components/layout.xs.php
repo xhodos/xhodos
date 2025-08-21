@@ -13,12 +13,12 @@
 	<link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 	
 	<script src="{{ asset('assets/plugins/fuxcel/js/fuxcel.js') }}" defer></script>
-	<script src="{{ asset('assets/js/app.js') }}" defer></script>
+	<script src="{{ asset('assets/js/app.js') }}" type="module"></script>
 </head>
 
 <body>
 	<main>
-		@yield('body')
+		{{ $slot }}
 	</main>
 </body>
 </html>

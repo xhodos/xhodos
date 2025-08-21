@@ -1,3 +1,29 @@
+$nav-height: 4rem;
+$full-height: calc(100dvh - $nav-height);
+
+$component-border-radius: .5rem;
+
+@mixin component-item-props {
+  &:hover {
+    background-color: darkgray;
+  }
+
+  &:first-child {
+    border-top-left-radius: $component-border-radius;
+    border-top-right-radius: $component-border-radius;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: $component-border-radius;
+    border-bottom-right-radius: $component-border-radius;
+  }
+}
+
+:root {
+  --nav-height: #{$nav-height};
+  --full-height: #{$full-height};
+}
+
 .fx-btn.fx-btn-primary.fx-btn-link {
   --fx-btn-padding-x: 0;
   --fx-btn-padding-y: 0;
@@ -25,17 +51,6 @@ body {
   margin: 0;
   overflow: hidden;
   width: 100%;
-}
-
-nav {
-  display: flex;
-  align-items: center;
-  // padding: 0.2rem 0.5rem;
-  border-bottom: 1px solid grey;
-
-  @media (min-width: 992px) {
-    // padding: 0.5rem 1rem;
-  }
 }
 
 main {
@@ -66,31 +81,115 @@ button {
   border-radius: 50%;
 }
 
-.nav-links {
-  padding: 1rem 0;
+.nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
 
-  a {
-    padding: 1rem 1.5rem;
+  .nav-item {
+    height: 100%;
 
-    > *:first-child {
-      display: none;
+    .nav-link {
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+
+
+      &.responsive {
+        > *:first-child {
+          display: none;
+        }
+
+        @media (min-width: 768px) {
+
+          > * {
+            &:first-child {
+              display: unset;
+            }
+
+            &:last-child {
+              display: none;
+            }
+          }
+        }
+      }
     }
 
     @media (min-width: 768px) {
       &:not(:last-child) {
         margin-right: 1.5rem;
       }
-
-      > * {
-        &:first-child {
-          display: unset;
-        }
-
-        &:last-child {
-          display: none;
-        }
-      }
     }
+
+  }
+}
+
+.dropdown {
+  display: flex;
+  position: relative;
+  align-items: center;
+  z-index: 10;
+
+  .dropdown-toggler {
+    cursor: pointer;
+    pointer-events: none;
+  }
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    border-radius: .5rem;
+    min-width: 200px;
+    border: 1px solid #ccc;
+    background-color: gray;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 100%; /* move above the box */
+      left: 5px; /* adjust to align with button */
+      border-width: 9px;
+      border-style: solid;
+      border-color: transparent transparent gray transparent; /* arrow color */
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 100%; /* slightly behind */
+      left: 5px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent gray transparent; /* arrow border */
+    }
+
+    .dropdown-menu-item {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: white;
+
+      @include component-item-props
+    }
+  }
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  height: var(--nav-height);
+  border-bottom: 1px solid grey;
+
+  .dropdown-menu {
+    &.full-menu {
+      max-height: calc(var(--full-height) / 1.5);
+    }
+  }
+
+  @media (min-width: 992px) {
+    // padding: 0.5rem 1rem;
   }
 }
 
@@ -98,14 +197,6 @@ button {
   height: 50px;
   width: 50px;
   background: grey;
-}
-
-.user-profile-toggler {
-  padding: 0 0.5rem;
-
-  @media (min-width: 992px) {
-    padding: 0;
-  }
 }
 
 .chat-wrapper {
@@ -276,9 +367,9 @@ button {
         .contextmenu {
           position: absolute;
           top: 50%;
-          right: 0%;
+          right: 0;
           display: none;
-          border-radius: 0.5rem;
+          border-radius: $component-border-radius;
           flex-direction: column;
           background-color: gray;
           transform: translateX(50%);
@@ -292,19 +383,7 @@ button {
             padding: 1rem;
             color: white;
 
-            &:hover {
-              background-color: darkgray;
-            }
-
-            &:first-child {
-              border-top-left-radius: 0.5rem;
-              border-top-right-radius: 0.5rem;
-            }
-
-            &:last-child {
-              border-bottom-left-radius: 0.5rem;
-              border-bottom-right-radius: 0.5rem;
-            }
+            @include component-item-props;
 
             &:not(:last-child) {
               border-bottom: 1px solid lightgray;

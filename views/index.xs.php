@@ -1,11 +1,7 @@
-@extends('components.layout')
-
-<hodos:nav/>
-
-@section('body')
+<hodos:layout>
+	<hodos:nav/>
 	
 	<div id="error-bag" data-errors='<?= json_encode(errorBag()) ?>'></div>
-	
 	<div class="chat-wrapper">
 		<section id="chat-contacts" class="left-menu active">
 			<h3 style="padding: .5rem;margin: 0;">Friends</h3>
@@ -97,4 +93,4 @@
 		</section>
 		<!-- <aside id="contact-info">d</aside> -->
 	</div>
-@endsection
+</hodos:layout>

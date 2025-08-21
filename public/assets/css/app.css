@@ -1,3 +1,8 @@
+:root {
+  --nav-height: 4rem;
+  --full-height: calc(100dvh - 4rem);
+}
+
 .fx-btn.fx-btn-primary.fx-btn-link {
   --fx-btn-padding-x: 0;
   --fx-btn-padding-y: 0;
@@ -27,11 +32,6 @@ body {
   width: 100%;
 }
 
-nav {
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid grey;
-}
 main {
   padding: 0 !important;
   display: flex;
@@ -61,40 +61,105 @@ button {
   border-radius: 50%;
 }
 
-.nav-links {
-  padding: 1rem 0;
+.nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
-.nav-links a {
-  padding: 1rem 1.5rem;
+.nav .nav-item {
+  height: 100%;
 }
-.nav-links a > *:first-child {
+.nav .nav-item .nav-link {
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+}
+.nav .nav-item .nav-link.responsive > *:first-child {
   display: none;
 }
 @media (min-width: 768px) {
-  .nav-links a:not(:last-child) {
-    margin-right: 1.5rem;
-  }
-  .nav-links a > *:first-child {
+  .nav .nav-item .nav-link.responsive > *:first-child {
     display: unset;
   }
-  .nav-links a > *:last-child {
+  .nav .nav-item .nav-link.responsive > *:last-child {
     display: none;
   }
 }
+@media (min-width: 768px) {
+  .nav .nav-item:not(:last-child) {
+    margin-right: 1.5rem;
+  }
+}
 
+.dropdown {
+  display: flex;
+  position: relative;
+  align-items: center;
+  z-index: 10;
+}
+.dropdown .dropdown-toggler {
+  cursor: pointer;
+  pointer-events: none;
+}
+.dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 110%;
+  border-radius: 0.5rem;
+  min-width: 200px;
+  border: 1px solid #ccc;
+  background-color: gray;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.dropdown .dropdown-menu::before {
+  content: "";
+  position: absolute;
+  bottom: 100%; /* move above the box */
+  left: 5px; /* adjust to align with button */
+  border-width: 9px;
+  border-style: solid;
+  border-color: transparent transparent gray transparent; /* arrow color */
+}
+.dropdown .dropdown-menu::after {
+  content: "";
+  position: absolute;
+  bottom: 100%; /* slightly behind */
+  left: 5px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent gray transparent; /* arrow border */
+}
+.dropdown .dropdown-menu .dropdown-menu-item {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: white;
+}
+.dropdown .dropdown-menu .dropdown-menu-item:hover {
+  background-color: darkgray;
+}
+.dropdown .dropdown-menu .dropdown-menu-item:first-child {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.dropdown .dropdown-menu .dropdown-menu-item:last-child {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  height: var(--nav-height);
+  border-bottom: 1px solid grey;
+}
+.navbar .dropdown-menu.full-menu {
+  max-height: calc(var(--full-height) / 1.5);
+}
 .profile-img {
   height: 50px;
   width: 50px;
   background: grey;
-}
-
-.user-profile-toggler {
-  padding: 0 0.5rem;
-}
-@media (min-width: 992px) {
-  .user-profile-toggler {
-    padding: 0;
-  }
 }
 
 .chat-wrapper {
@@ -231,7 +296,7 @@ button {
 #chat-space .chat-space-body .chats .chat-main .contextmenu {
   position: absolute;
   top: 50%;
-  right: 0%;
+  right: 0;
   display: none;
   border-radius: 0.5rem;
   flex-direction: column;

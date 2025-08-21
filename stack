@@ -4,8 +4,12 @@ if (!defined('PROJECT_ROOT'))
 	define('PROJECT_ROOT', str_replace('\\', '/', realpath(__DIR__)));
 
 require_once PROJECT_ROOT . '/vendor/xhodos/framework/Helpers/app.php';
+require_once PROJECT_ROOT . '/vendor/xhodos/framework/Stack/Template/View.php';
 require_once PROJECT_ROOT . '/vendor/xhodos/framework/Stack/Template/Engine.php';
 require_once PROJECT_ROOT . '/vendor/xhodos/framework/Stack/Template/Compiler.php';
+
+require_once PROJECT_ROOT . '/vendor/xhodos/framework/Stack/Support/Cache.php';
+require_once PROJECT_ROOT . '/vendor/xhodos/framework/Stack/Support/TemplateProcessor.php';
 
 use Hodos\Stack\Template\Compiler;
 
@@ -83,11 +87,11 @@ switch ($command) {
 		echo "POST /submit\n";
 		break;
 	
-	/*case 'view:compile':
+	case 'view:compile':
 		echo "📆 Compiling views.\n";
 		Compiler::compileAll();
 		echo "✅  View compilation done.\n";
-		break;*/
+		break;
 	
 	case 'view:clear':
 		echo "🧼  Clearing view cache...\n";
@@ -232,10 +236,41 @@ switch ($command) {
 	
 	default:
 		echo "❌  Unknown command.\n";
-		echo "Usage:\n";
-		echo "  php stack serve --host [host] --port [port]\n";
-		echo "  php stack route:list\n";
-		echo "  php stack view:compile\n";
-		echo "  php stack view:clear\n";
+		
+		if (str_contains($command, 'make')) {
+			echo "Do you mean one of these?\n";
+			echo "  php stack make:component --file [ComponentName]\n";
+			echo "  php stack make:controller --file [ControllerName]\n";
+		} elseif (str_contains($command, 'view')) {
+			echo "Do you mean one of these?\n";
+			echo "  php stack view:compile\n";
+			echo "  php stack view:clear\n";
+		} elseif (str_contains($command, 'cle')) {
+			echo "Do you mean this?\n";
+			echo "  php stack view:clear\n";
+		} elseif (str_contains($command, 'lis')) {
+			echo "Do you mean this?\n";
+			echo "  php stack route:list\n";
+		} elseif (str_contains($command, 'con')) {
+			echo "Do you mean this?\n";
+			echo "  php stack make:controller --file [ControllerName]\n";
+		} elseif (str_contains($command, 'com')) {
+			echo "Do you mean one of these?\n";
+			echo "  php stack make:component --file [ComponentName]\n";
+			echo "  php stack view:compile\n";
+		} elseif (str_contains($command, 'co')) {
+			echo "Do you mean one of these?\n";
+			echo "  php stack make:component --file [ComponentName]\n";
+			echo "  php stack make:controller --file [ControllerName]\n";
+			echo "  php stack view:compile\n";
+		} else {
+			echo "Usage:\n";
+			echo "  php stack serve --host [host] --port [port]\n";
+			echo "  php stack route:list\n";
+			echo "  php stack make:component --file [ComponentName]\n";
+			echo "  php stack make:controller --file [ControllerName]\n";
+			echo "  php stack view:compile\n";
+			echo "  php stack view:clear\n";
+		}
 		break;
 }

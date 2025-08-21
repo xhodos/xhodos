@@ -4,14 +4,14 @@
     </IfModule>
 
 	RewriteEngine On
-    # RewriteBase xstack
+	#RewriteBase /
 
 	ErrorDocument 400 %{REQUEST_SCHEME}
-    ErrorDocument 401 %{REQUEST_URI}
-    ErrorDocument 403 %{REQUEST_URI}
-    # ErrorDocument 404 /php-learn/views/errors/404.php
-    # ErrorDocument 404 %{REQUEST_FILENAME}
-    # ErrorDocument 500 %{REQUEST_FILENAME}
+	ErrorDocument 401 %{REQUEST_URI}
+	ErrorDocument 403 %{REQUEST_URI}
+	# ErrorDocument 404 /php-learn/views/errors/404.php
+	# ErrorDocument 404 %{REQUEST_FILENAME}
+    ErrorDocument 500 %{REQUEST_FILENAME}
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

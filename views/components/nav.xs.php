@@ -21,14 +21,14 @@
 	</div>
 	<div class="nav">
 		<div class="dropdown nav-item">
-			<a href="#" class="dropdown-toggler" title="Profile">
+			<a href="javascript:void(0);" class="dropdown-toggler" title="Profile">
 				<i class="fad fa-3x fa-user-circle"></i>
 			</a>
 			
 			<div class="dropdown-menu full-menu">
-				<a href="{{ route('home') }}" class="dropdown-menu-item">Test Link</a>
-				<a href="#" class="dropdown-menu-item">Test Link</a>
-				<a href="#" class="dropdown-menu-item">Test Link</a>
+				<a href="{{ route('login') }}" class="dropdown-menu-item">Login</a>
+				{{-- <a href="#" class="dropdown-menu-item">Test Link</a>
+				<a href="#" class="dropdown-menu-item">Test Link</a> --}}
 			</div>
 		</div>
 	</div>

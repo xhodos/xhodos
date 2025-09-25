@@ -395,9 +395,9 @@ declare class Fuxcel extends FuxcelBase implements FuxcelInterface {
     fadeout(display?: string): Promise<Fuxcel>;
     fadeout(timeout?: number, iteration?: string): Promise<Fuxcel>;
     fadein(display?: string): Promise<Fuxcel>;
-    fadein(timeout?: number, iteration?: string): Promise<Fuxcel>;
+    fadein(timeout?: number, display?: string): Promise<Fuxcel>;
     slideindown(display?: string): Promise<Fuxcel>;
-    slideindown(timeout?: number, iteration?: string): Promise<Fuxcel>;
+    slideindown(timeout?: number, display?: string): Promise<Fuxcel>;
     slideinup(display?: string): Promise<Fuxcel>;
     slideinup(timeout?: number, iteration?: string): Promise<Fuxcel>;
     slideoutdown(display?: string): Promise<Fuxcel>;
@@ -677,14 +677,14 @@ declare class Fuxcel extends FuxcelBase implements FuxcelInterface {
      * Toggle the disabled state (property) of the selected element [a button preferably].
      *
      * @param isLoading {boolean} Determines the state of the button.
-     * @return {Fuxcel} Fuxcel Object of the selected element.
+     * @return {Promise<Fuxcel>} Promise of Fuxcel Object of the selected element.
      */
     toggleButtonLoadState(isLoading?: boolean): Promise<Fuxcel>;
     /**
      * Toggles the submit button state of the selected form.
      *
      * @param isLoading {boolean} Determines the state of the button.
-     * @return {Fuxcel} Fuxcel Object of the selected element.
+     * @return {Promise<Fuxcel>} Promise of Fuxcel Object of the selected element.
      */
     toggleFormSubmitButtonState(isLoading?: boolean): Promise<Fuxcel>;
     /**

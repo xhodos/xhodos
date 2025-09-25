@@ -25,10 +25,11 @@
 				<i class="fad fa-3x fa-user-circle"></i>
 			</a>
 			
-			<div class="dropdown-menu full-menu">
-				<a href="{{ route('login') }}" class="dropdown-menu-item">Login</a>
-				{{-- <a href="#" class="dropdown-menu-item">Test Link</a>
-				<a href="#" class="dropdown-menu-item">Test Link</a> --}}
+			<div class="dropdown-menu dropdown-menu-right full-menu">
+				@auth
+					<a href="{{ route('login') }}" class="dropdown-menu-item"><span class="icon-text"><i class="fa fa-user-cog"></i> Profile</span></a>
+					<a href="{{ route('logout') }}" class="dropdown-menu-item"><span class="icon-text"><i class="fa fa-power-off"></i> Logout</span></a>
+				@endauth
 			</div>
 		</div>
 	</div>

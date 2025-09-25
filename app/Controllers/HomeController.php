@@ -2,7 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Models\Message;
+use App\Models\MessageStatus;
+use App\Models\User;
 use DateTime;
+use Hodos\Base\Auth;
 use Hodos\Base\Controller;
 use Hodos\Base\Request;
 use Hodos\Base\Validator;
@@ -18,7 +22,9 @@ class HomeController extends Controller
 			'id' => ['required', 'email', 'string', 'date:m-d-Y'],
 			'name_bass' => ['required', 'array'],
 		]);
-		new ValidatorResponse(new Validator())->stackErrors(['blue' => 'red']); // TODO: Clean function to stack Validator Errors
+		
+		if (!Auth::check())
+			header('Location: ' . route('login'));
 		
 		$chat_messages = (object) [
 			[

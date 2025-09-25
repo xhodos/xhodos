@@ -51,6 +51,32 @@ body {
   margin: 0;
   overflow: hidden;
   width: 100%;
+
+  input {
+    &[type="search"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      padding: 1rem;
+      outline: none;
+      border: 1px solid lightgrey;
+      border-radius: .5rem;
+
+      &:focus {
+        border-color: var(--fx-primary);
+      }
+
+      &#new_chat {
+        width: 90%;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+
+        @media (min-width: 1200px) {
+          width: 50%;
+        }
+      }
+    }
+  }
 }
 
 main {
@@ -63,10 +89,84 @@ main {
 
 a {
   text-decoration: none;
+
+  &.disabled {
+    pointer-events: none;
+  }
 }
 
 button {
   cursor: pointer;
+}
+
+#auth-section {
+  min-height: 100dvh;
+  display: flex;
+
+  .form-wrapper {
+    margin: auto;
+    width: 100%;
+
+    @media (min-width: 768px) {
+      width: 70%;
+    }
+
+    @media (min-width: 992px) {
+      width: 50%;
+    }
+
+    @media (min-width: 1200px) {
+      width: 40%;
+    }
+
+    @media (min-width: 1400px) {
+      width: 30%;
+    }
+  }
+}
+
+#add-chat-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .content-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: inherit;
+
+    .content {
+      margin: auto;
+    }
+  }
+}
+
+.container-fluid {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+.icon-text {
+  display: flex;
+  align-items: center;
+
+  i {
+    width: 24px;
+    //margin-right: ;
+  }
 }
 
 .space-items {
@@ -88,9 +188,11 @@ button {
 
   .nav-item {
     height: 100%;
+    margin-right: 2.5rem;
 
     .nav-link {
       height: 100%;
+      padding: 0 .2rem;
       display: inline-flex;
       align-items: center;
 
@@ -124,19 +226,35 @@ button {
   }
 }
 
+.btn-submit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .btn-text:is(:first-child) {
+    margin-right: .5rem
+  }
+
+  .btn-text:is(:last-child) {
+    margin-left: .5rem
+  }
+}
+
 .dropdown {
   display: flex;
+  cursor: pointer;
   position: relative;
   align-items: center;
   z-index: 10;
 
   .dropdown-toggler {
-    cursor: pointer;
     pointer-events: none;
   }
 
   .dropdown-menu {
     display: none;
+    cursor: default;
     position: absolute;
     top: 110%;
     border-radius: .5rem;
@@ -165,6 +283,20 @@ button {
       border-color: transparent transparent gray transparent; /* arrow border */
     }
 
+    &.dropdown-menu-right {
+      right: 0;
+
+      &::before {
+        right: 5px; /* adjust to align with button */
+        left: unset;
+      }
+
+      &::after {
+        right: 5px;
+        left: unset;
+      }
+    }
+
     .dropdown-menu-item {
       display: block;
       padding: 10px;
@@ -178,6 +310,7 @@ button {
 
 .navbar {
   display: flex;
+  padding: 0 .5rem;
   align-items: center;
   height: var(--nav-height);
   border-bottom: 1px solid grey;
@@ -215,7 +348,25 @@ button {
   }
 
   > .left-menu {
-    @media (min-width: 992px) {
+    .left-menu-header {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+
+      .section {
+        margin: 0;
+        display: flex;
+        padding: .5rem;
+        align-items: center;
+        justify-content: space-between;
+
+        input {
+          width: 100%;
+        }
+      }
+    }
+
+    @media (min-width: 768px) {
       border-right: 1px solid black;
     }
   }
@@ -303,6 +454,11 @@ button {
       right: 100%;
   } */
 
+  @media (min-width: 768px) {
+    // position: relative;
+    width: 40%;
+  }
+
   @media (min-width: 992px) {
     // position: relative;
     width: 30%;
@@ -367,12 +523,20 @@ button {
         .contextmenu {
           position: absolute;
           top: 50%;
-          right: 0;
           display: none;
-          border-radius: $component-border-radius;
           flex-direction: column;
           background-color: gray;
-          transform: translateX(50%);
+          border-radius: $component-border-radius;
+
+          &.to {
+            left: 0;
+            transform: translateX(-50%);
+          }
+
+          &.from {
+            right: 0;
+            transform: translateX(50%);
+          }
 
           &.active {
             display: flex;
@@ -416,7 +580,7 @@ button {
         width: 100%;
         border-radius: 5rem;
         border: 1px solid black;
-        padding: 0.5rem 0.8rem;
+        padding: 0.5rem 3.8rem;
       }
 
       @media (min-width: 992px) {
@@ -447,5 +611,63 @@ button {
   @media (min-width: 1400px) {
     width: 80%;
     margin-left: 20%;
+  }
+}
+
+#new-chat-search-wrapper {
+  width: 100%;
+  position: relative;
+  padding: .8rem 1rem;
+
+  #new-chat-result-wrapper {
+    position: absolute;
+    margin: auto;
+    text-align: left;
+    left: calc(5% + 1rem);
+    right: calc(5% + 1rem);
+    //border: 1px solid red;
+
+    .result-item {
+      color: white;
+      border-radius: 0;
+      display: flex;
+      text-align: left;
+      align-items: center;
+      padding: .8rem 1rem;
+
+      &:hover {
+        background-color: lightslategray;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid lightgray;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: $component-border-radius;
+        border-bottom-right-radius: $component-border-radius;
+      }
+
+      > *:not(:last-child) {
+        margin-right: 1rem;
+      }
+
+      .chat-friend-info {
+        display: flex;
+        flex-direction: column;
+
+        .name {
+          font-weight: 700;
+          font-size: 1.2rem;
+          margin-bottom: 0.2rem;
+          text-transform: capitalize;
+        }
+      }
+    }
+
+    @media (min-width: 1200px) {
+      left: calc(25% + .5rem);
+      right: calc(25% + .5rem);
+    }
   }
 }
